@@ -14,13 +14,9 @@ By the end of this guide, you will be able to understand and perform the followi
 		- Disable root access via ssh
 
 ## Creating a SSH keys on local machine
-SSH protocol allows you to send commands to a computer safely with unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. 
-https://www.cloudflare.com/learning/access-management/what-is-ssh/
-It is a common way for managing computer remotely (Usually between client and server). 
+SSH protocol allows you to send commands to a computer safely with unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way for managing computer remotely (Usually between client and server). 
 
 The way of encrypting is like putting the following items as a box with a lock to your friend (public key). Only your friend have the key to unlock the box( private key.
-
-https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 1. Open Terminal.
 
@@ -64,9 +60,6 @@ There should be two files
 ## Create a Droplet running Arch Linux using the `doctl` command-line tool
 
 Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and manage your DigitalOcean account.  It allows you to perform various tasks. For example, setting up new droplet, add a new SSH key. We will learn how to create a new droplet in a existing droplet.
-https://docs.digitalocean.com/reference/doctl/
-https://wiki.archlinux.org/title/Pacman
-
 ### Installing `doctl` Utility on your Local Machine
 1. Connect to your droplet.
 2. Use the command into your terminal and run it as administrator
@@ -198,7 +191,6 @@ users:
     shell: /bin/bash
     ssh-authorized-keys:
       - ssh-ed25519 <Your Public Key> <Your Email>
-	
 
 packages:
   - ripgrep
@@ -217,7 +209,6 @@ runcmd:
   - /etc/init.d/sshd restart
 ```
 
-https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login
 ### Paste the command below to create a new droplet.
 1. Use the command below to check list of existing project.
 ```shell
@@ -225,7 +216,6 @@ doctl projects list
 ```
 
 2. Use command line below to create a new droplet
-https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/
 ```shell
 doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --projcet-id <Project ID><Droplet Name>
 ```
@@ -262,3 +252,25 @@ Host <Name>
 ssh <Name> # If you set up the config file
 ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
+
+## Reference
+
+1. Cloudflare. (n.d.). _What is SSH?_. Cloudflare. Retrieved from [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
+    
+2. GitHub. (n.d.). _Generating a new SSH key and adding it to the ssh-agent_. GitHub Docs. Retrieved from [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+    
+3. DigitalOcean. (n.d.). _doctl reference documentation_. DigitalOcean Docs. Retrieved from [https://docs.digitalocean.com/reference/doctl/](https://docs.digitalocean.com/reference/doctl/)
+    
+4. ArchWiki. (n.d.). _Pacman_. ArchWiki. Retrieved from [https://wiki.archlinux.org/title/Pacman](https://wiki.archlinux.org/title/Pacman)
+    
+5. DigitalOcean. (n.d.). _How to use Cloud-Config for your initial server setup_. DigitalOcean Tutorials. Retrieved from [https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup)
+    
+6. IBM. (n.d.). _Enable or disable remote root login_. IBM Docs. Retrieved from [https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login](https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login)
+    
+7. DigitalOcean. (n.d.). _Automate setup with Cloud-Init_. DigitalOcean Docs. Retrieved from [https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/](https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/)
+    
+8. McNinch, N. (n.d.). _Week one notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-one.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-one.md?ref_type=heads)
+    
+9. McNinch, N. (n.d.). _Week two notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-two.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-two.md?ref_type=heads)
+    
+10. McNinch, N. (n.d.). _Week three notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-three.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-three.md?ref_type=heads)
