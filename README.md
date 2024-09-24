@@ -1,32 +1,38 @@
 # 2420-Assignment-1
-By the end of this guide, you will be able to understand and perform the following tasks
+By the end of this guide, you will understand the use of SSH,  `doctl`and will be able to perform the following tasks:
 - Create SSH keys on your local machine
+
 - Create a Droplet running Arch Linux using the `doctl` command-line tool
 	- Create SSH keys and add them to your DigitalOcean account  
 	- Add a custom Arch Linux image  
 	- Create a droplet running Arch Linux  
 	- Connect to your droplet from your local machine using SSH
+
 - Use `doctl` and cloud-init for every stage of setting up an Arch Linux droplet
 	- For cloud-init configuration file, we will cover the following actions
 		- Create a new regular user
 		- Install some initial packages
 		- Add a public ssh key to the authorized_keys file in your new users home directory
 		- Disable root access via ssh
-
 ## Creating a SSH keys on local machine
 SSH protocol allows you to send commands to a computer safely with unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way for managing computer remotely (Usually between client and server). 
 
-The way of encrypting is like putting the following items as a box with a lock to your friend (public key). Only your friend have the key to unlock the box( private key.
+The way of encrypting is like putting the following items as a box with a lock to your friend (public key). Only your friend have the key to unlock the box( private key).
 
 1. Open Terminal.
 
-3. Use the command below, replace *Your Email Here* with your own Email.
+2. Use the command below, replace *Your Email Here* with your own Email.
 ```shell 
 ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
 ```
+`ssh-keygen` is a built-in
+
 `~`  is a symbol represents the current user's home directory. 
+
 `-f` specify the filename and file path of the key file.
+
 `-t` specify the algorithms to encrypt
+
 `-C` specify a comment to the key
 
 **Note** : For legacy system that may not support ed25519 algorithms, use the command below
@@ -62,10 +68,11 @@ There should be two files
 Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and manage your DigitalOcean account.  It allows you to perform various tasks. For example, setting up new droplet, add a new SSH key. We will learn how to create a new droplet in a existing droplet.
 ### Installing `doctl` Utility on your Local Machine
 1. Connect to your droplet.
-2. Use the command into your terminal and run it as administrator
+
+2. Use the command into your terminal and run Powershell as administrator if you are using Windows
 ```shell
 # Arch Linux
-sudo pacman -S doctl # Arch
+sudo pacman -S doctl
 
 # macOS and Linux
 cd ~
@@ -74,6 +81,7 @@ wget https://github.com/digitalocean/doctl/releases/download/v1.110.0/doctl-1.11
 tar xf ~/doctl-1.110.0-linux-amd64.tar.gz
 
 sudo mv ~/doctl /usr/local/bin
+
 # Windows
 Invoke-WebRequest https://github.com/digitalocean/doctl/releases/download/v1.110.0/doctl-1.110.0-windows-amd64.zip -OutFile ~\doctl-1.110.0-windows-amd64.zip
 
@@ -90,6 +98,7 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 ```
 
 `sudo` means superuser do, it will temporarily elevate to root user to have root privileges
+
 `pacman` is one distinguishing utility of Arch Linux, it allows user to manage their packages for easily
 `-S` specify install only
 ### Create SSH keys and add them to your DigitalOcean account
@@ -104,10 +113,11 @@ doctl compute ssh-key create <Key Name> --public <C:\Users\<Username>\.ssh\do-ke
 doctl compute ssh-key create <Key Name> --public <~/.ssh/do-key.pub> # Windows
 ```
 ### Add a custom Arch Linux image
+Image is a file of operating system.
 
 1. Use the command below to upload the image file
 ```shell
-doctl compute image create --image-file <Path To Image> --name <Name>
+doctl compute image create <Name> --image-url https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-basic-20240915.263127.qcow2 --name <Name>
 ```
 
 2. Use the command below to verify image
@@ -117,6 +127,7 @@ doctl compute image list-user
 
 **Note** :`list-user` specify for custom image only
 ### Create a New Personal Access Token
+Personal Access Token is like your account name and password. It is a common way for linking a web service account to your API.
 
 1. Go to https://cloud.digitalocean.com/account/api/tokens and click **Generate New Token** 
 
