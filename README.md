@@ -158,7 +158,7 @@ Cloud-init is a tool to performance configuration for setting up new system auto
 vim cloud-init-arch.yml
 ```
 
-2. Paste the following lines into your `cloud-init-arch.yml` https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup
+2. Paste the following lines into your `cloud-init-arch.yml`[^13] 
 ```yaml
 #cloud-config
 users:
@@ -283,3 +283,5 @@ ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 [^11]:  [https://cloudinit.readthedocs.io/en/latest/reference/examples.html](https://cloudinit.readthedocs.io/en/latest/reference/examples.html)
 
 [^12]: [https://www.ssh.com/academy/ssh/config](https://www.ssh.com/academy/ssh/config)
+
+[^13]: [https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup)
