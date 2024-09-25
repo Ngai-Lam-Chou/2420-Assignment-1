@@ -14,10 +14,10 @@ By the end of this guide, you will understand the use of SSH,  `doctl`and will b
 		- Install some initial packages
 		- Add a public ssh key to the authorized_keys file in your new users home directory
 		- Disable root access via ssh
-## Creating a SSH keys on local machine
-SSH protocol allows you to send commands to a computer safely with unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way for managing computer remotely (Usually between client and server). 
+## Creating a SSH keys on local machine[^1] [^9]
+SSH is a protocol allows you to safely send commands to a computer over an unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way for managing computer remotely (Usually between client and server).
 
-The way of encrypting is like putting the following items as a box with a lock to your friend (public key). Only your friend have the key to unlock the box( private key).
+You can think of SSH keys like a locked box: the public key is like giving your friend a box to which only they have the key (the private key) to unlock.
 
 1. Open Terminal.
 
@@ -25,7 +25,8 @@ The way of encrypting is like putting the following items as a box with a lock t
 ```shell 
 ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
 ```
-`ssh-keygen` is a built-in
+
+`ssh-keygen` is the command-line utility for generating SSH keys.
 
 `~`  is a symbol represents the current user's home directory. 
 
@@ -38,95 +39,60 @@ ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
 **Note** : For legacy system that may not support ed25519 algorithms, use the command below
 
 ```shell
- ssh-keygen -t rsa -b 4096 -f ~/.ssh/do-key-C "Your Email Here"
-```
-
-For Windows users,
-```shell 
-ssh-keygen -t ed25519 -f C:\Users\Your Username Here\.ssh\do-key -C "Your Email Here"
+ ssh-keygen -t rsa -b 4096 -f ~/.ssh/do-key -C "Your Email Here"
 ```
 
  You can choose rather add a passphrase for your SSH key or not, it is like setting up an extra password every time you connect using SSH.
  
+If it success, it should look like
 ![[assets/key_image.png]]
-
-3. Open your file explorer
-
-4. Navigate to this path 
+3. Use the commands below to navigate to `.ssh` directory
 ```
-/home/your-username/.ssh # Linux
-/Users/your-username/.ssh # macOS
-C:\Users\your-username\.ssh # Windows
+cd ~/.ssh
 ```
 
+4. Use the commands below to list items in the directory
+```shell
+ls
+```
+![[ls_keys.png]]
 There should be two files
-* `do-key` which is your private key
-* `do-key.pub` which is your public key
+* `do-key` which is your private key (keep it private)
+* `do-key.pub` which is your public key (you can share this)
 
 ## Create a Droplet running Arch Linux using the `doctl` command-line tool
 
-Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and manage your DigitalOcean account.  It allows you to perform various tasks. For example, setting up new droplet, add a new SSH key. We will learn how to create a new droplet in a existing droplet.
+Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and manage your DigitalOcean account.  It allows you to perform various tasks. For example, setting up new droplet, adding a new SSH key. We will learn how to create a new droplet in a existing droplet.
 ### Installing `doctl` Utility on your Local Machine
-1. Connect to your droplet.
-
-2. Use the command into your terminal and run Powershell as administrator if you are using Windows
+#### Arch Linux
+1. Run the following command in your terminal
 ```shell
-# Arch Linux
 sudo pacman -S doctl
-
-# macOS and Linux
-cd ~
-wget https://github.com/digitalocean/doctl/releases/download/v1.110.0/doctl-1.110.0-linux-amd64.tar.gz
-
-tar xf ~/doctl-1.110.0-linux-amd64.tar.gz
-
-sudo mv ~/doctl /usr/local/bin
-
-# Windows
-Invoke-WebRequest https://github.com/digitalocean/doctl/releases/download/v1.110.0/doctl-1.110.0-windows-amd64.zip -OutFile ~\doctl-1.110.0-windows-amd64.zip
-
-Expand-Archive -Path ~\doctl-1.110.0-windows-amd64.zip
-
-New-Item -ItemType Directory $env:ProgramFiles\doctl\
-Move-Item -Path ~\doctl-1.110.0-windows-amd64\doctl.exe -Destination $env:ProgramFiles\doctl\
-[Environment]::SetEnvironmentVariable(
-    "Path",
-    [Environment]::GetEnvironmentVariable("Path",
-    [EnvironmentVariableTarget]::Machine) + ";$env:ProgramFiles\doctl\",
-    [EnvironmentVariableTarget]::Machine)
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 ```
+* `sudo` means superuser do, it will temporarily elevate to root user to have root privileges
 
-`sudo` means superuser do, it will temporarily elevate to root user to have root privileges
+* `pacman` is one distinguishing utility of Arch Linux, it allows user to manage their packages for easily[^4]
 
-`pacman` is one distinguishing utility of Arch Linux, it allows user to manage their packages for easily
-`-S` specify install only
-### Create SSH keys and add them to your DigitalOcean account
+* `-S` specify install only
+### Create SSH keys and add them to your DigitalOcean account[^3]
 
 The process is like giving your DigitalOcean a lock that only you can unlock.
 
-1. Copy your SSH public key from `~/.ssh/do-key.pub` for macOS or Linux or `C:\Users\<Username>\.ssh\do-key.pub`
+1. Copy your SSH public key from `~/.ssh/do-key.pub`
 
 2. Use the command below to add an SSH key to your DIgitalOcean
 ```shell
-doctl compute ssh-key create <Key Name> --public <C:\Users\<Username>\.ssh\do-key.pub> # Windows
-doctl compute ssh-key create <Key Name> --public <~/.ssh/do-key.pub> # Windows
+doctl compute ssh-key create "<Key Name>" --public-key "$(cat ~/.ssh/do-key.pub)"
 ```
-### Add a custom Arch Linux image
-Image is a file of operating system.
+* `doctl compute ssh-key create` create a new SSH key linked to our account
 
-1. Use the command below to upload the image file
-```shell
-doctl compute image create <Name> --image-url https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-basic-20240915.263127.qcow2 --name <Name>
-```
+* `--public-key` specify your public key
 
-2. Use the command below to verify image
-```
-doctl compute image list-user
-```
+* `"$(<Command>)"` is doing command substitution. It will replace command with the output of command instead.[^2] 
 
-**Note** :`list-user` specify for custom image only
-### Create a New Personal Access Token
+* `cat ~/.ssh/do-key.pub` is reading `do-key.pub` file which is your public key.
+![[ssh_key_doctl.png]]
+### Create a New Personal Access Token [^10]
 Personal Access Token is like your account name and password. It is a common way for linking a web service account to your API.
 
 1. Go to https://cloud.digitalocean.com/account/api/tokens and click **Generate New Token** 
@@ -135,7 +101,7 @@ Personal Access Token is like your account name and password. It is a common way
 
 3. Click **Generate Token**
 
-### Link your Personal Access Token to `doctl`
+### Link your Personal Access Token to `doctl` [^10]
 Adding your Personal Access Token to your doctl is giving your doctl access to control your DigitalOcean account.
 
 1. Go back to your droplet and  use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DIgitalOcean account using `doctl`.
@@ -145,7 +111,7 @@ doctl auth init --context <Name>
 
 2. Enter your API token
 
-3. Paste the command below to switch the new API.
+3. Paste the command below to switch to the new API.
 ```shell
 doctl auth switch --context <Name>
 ```
@@ -169,26 +135,27 @@ doctl compute ssh-key list
 
 7. Use the command below to create a cloud-init configuration file.
 ```shell
-touch cloud-init-arch.yaml
+touch cloud-init-arch.yml
 ```
 
-8. Use the command below to install vim or nano
+8. Use the command below to install vim which is a common text editor on Linux.
 ```shell
 sudo pacman -S vim # vim
-sudo pacman -S nano # nano
 ```
 
-### Cloud-init
+### Cloud-init[^6][^8][^11]
 Cloud-init is a tool to performance configuration for setting up new system automatically. We will use cloud-init to perform a few action
 * Setting up SSH keys
+
 * Install Packages
+
 * Disable root access via SSH
+
 * Create a new regular user
 
-1. Open `cloud-init-arch.yaml` using vim or nano
+1. Open `cloud-init-arch.yaml` using vim
 ```shell
-vim cloud-init-arch.yaml # vim
-nano cloud-init-arch.yaml # nano
+vim cloud-init-arch.yml
 ```
 
 2. Paste the following lines into your `cloud-init-arch.yml` https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup
@@ -214,12 +181,28 @@ packages:
   - tmux
 
 disable_root: true
-
-runcmd:
-  - sed -i 's/^PermitRootLogin .*/PermitRootLogin no/' /etc/ssh/sshd_config
-  - /etc/init.d/sshd restart
 ```
 
+`users` specify we are adding user
+* `name` specify username
+
+* `primary_group` specify the primary group
+
+* `groups` specify additional group
+
+* `sudo: ['ALL=(ALL) NOPASSWD:ALL']` allow a user unrestricted sudo access
+
+* `shell` specify the path of the shell
+
+* `ssh-authorized-keys` specify the keys that are adding to user's authorized keys file
+
+* `ssh-ed25519 <Your Public Key> <Your Email>`is your public key
+
+* `packages` specify installing the following packages on first boot
+
+* `disable_root: true` specify we disable connect to the droplet via SSH as root user
+
+**Note** : If copy and paste does not work, press `i` to insert text. After inputting all the text press `ESC` and enter `:wq!`
 ### Paste the command below to create a new droplet.
 1. Use the command below to check list of existing project.
 ```shell
@@ -228,11 +211,13 @@ doctl projects list
 
 2. Use command line below to create a new droplet
 ```shell
-doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --projcet-id <Project ID><Droplet Name>
+doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --projcet-id <Project ID> <Droplet Name>
 ```
-`--region` specify the region of the server
-`--image` specify the distro name for droplet
-`--size` specify the number of CPU and amount of RAM
+ * `--region` specify the region of the server
+ 
+* `--image` specify the distro name for droplet
+
+* `--size` specify the number of CPU and amount of RAM
 
 3. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
 
@@ -240,14 +225,15 @@ doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb
 ```shell
 doctl compute droplet list
 ```
-### Connect to your droplet from your local machine using SSH
+![[assets/new_droplet.png]]
+### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
 
 2. Navigate to your `~\.ssh\config` for Linux and or `C:\Users\your-username\.ssh`
 
 3. Open the `config` 
 
-4. Paste the followings,
+4. Paste the followings [^12]
 ```config
 Host <Name>
   HostName <Public IPv4 Address>
@@ -265,23 +251,26 @@ ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
 
 ## Reference
+[^1]: [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
 
-1. Cloudflare. (n.d.). _What is SSH?_. Cloudflare. Retrieved from [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
-    
-2. GitHub. (n.d.). _Generating a new SSH key and adding it to the ssh-agent_. GitHub Docs. Retrieved from [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-    
-3. DigitalOcean. (n.d.). _doctl reference documentation_. DigitalOcean Docs. Retrieved from [https://docs.digitalocean.com/reference/doctl/](https://docs.digitalocean.com/reference/doctl/)
-    
-4. ArchWiki. (n.d.). _Pacman_. ArchWiki. Retrieved from [https://wiki.archlinux.org/title/Pacman](https://wiki.archlinux.org/title/Pacman)
-    
-5. DigitalOcean. (n.d.). _How to use Cloud-Config for your initial server setup_. DigitalOcean Tutorials. Retrieved from [https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup)
-    
-6. IBM. (n.d.). _Enable or disable remote root login_. IBM Docs. Retrieved from [https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login](https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login)
-    
-7. DigitalOcean. (n.d.). _Automate setup with Cloud-Init_. DigitalOcean Docs. Retrieved from [https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/](https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/)
-    
-8. McNinch, N. (n.d.). _Week one notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-one.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-one.md?ref_type=heads)
-    
-9. McNinch, N. (n.d.). _Week two notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-two.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-two.md?ref_type=heads)
-    
-10. McNinch, N. (n.d.). _Week three notes_. GitLab. Retrieved from [https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-three.md?ref_type=heads](https://gitlab.com/cit2420/2420-notes-f24/-/blob/main/2420-notes/week-three.md?ref_type=heads)
+[^2]: [https://www.gnu.org/software/bash/manual/bash.html](https://www.gnu.org/software/bash/manual/bash.html)
+
+[^3]: [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+[^4]:  [https://wiki.archlinux.org/title/Pacman](https://wiki.archlinux.org/title/Pacman)
+
+[^5]: [https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login](https://www.ibm.com/docs/en/db2/11.1?topic=installation-enable-disable-remote-root-login)
+
+[^6]:  [https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/](https://docs.digitalocean.com/products/droplets/how-to/automate-setup-with-cloud-init/)
+
+[^7]:  [https://docs.digitalocean.com/reference/doctl/](https://docs.digitalocean.com/reference/doctl/)
+
+[^8]:  [https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup)
+
+[^9]: [https://www.ssh.com/academy/ssh/protocol](https://www.ssh.com/academy/ssh/protocol)
+
+[^10]: [https://docs.digitalocean.com/reference/api/create-personal-access-token/](https://docs.digitalocean.com/reference/api/create-personal-access-token/)
+
+[^11]:  [https://cloudinit.readthedocs.io/en/latest/reference/examples.html](https://cloudinit.readthedocs.io/en/latest/reference/examples.html)
+
+[^12]: [https://www.ssh.com/academy/ssh/config](https://www.ssh.com/academy/ssh/config)
