@@ -121,18 +121,18 @@ doctl auth switch --context <Name>
 doctl account get
 ```
 
-![[assets/user_name.png]]
+![[assets/api_user.png]]
 
 5. Use the command below to show a list of different plans and their specs and price.
 ```shell
 doctl compute size list
 ```
-
+![[price_list.png]]
 6. Use the command below to see your SSH key ID.
 ```shell
 doctl compute ssh-key list
 ```
-
+![[assets/ssh_key.png]]
 7. Use the command below to create a cloud-init configuration file.
 ```shell
 touch cloud-init-arch.yml
@@ -208,24 +208,28 @@ disable_root: true
 ```shell
 doctl projects list
 ```
-
-2. Use command line below to create a new droplet
+![[assets/project_list.png]]
+2. Use command line below to check list of custom image
+```Shell
+doctl compute image list-user
+```
+![[assets/custom_image.png]]
+3. Use command line below to create a new droplet
 ```shell
-doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --projcet-id <Project ID> <Droplet Name>
+doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --project-id <Project ID> <Droplet Name>
 ```
  * `--region` specify the region of the server
  
 * `--image` specify the distro name for droplet
 
 * `--size` specify the number of CPU and amount of RAM
-
-3. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
-
-4. Record the Public IPv4 address
+![[assets/create_droplet.png]]
+4. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
 ```shell
-doctl compute droplet list
+doctl compute droplet list --format Name,PublicIPv4
 ```
-![[assets/new_droplet.png]]
+![[ipv4.png]]
+5. Record the Public IPv4 address of the new droplet created
 ### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
 
@@ -233,7 +237,11 @@ doctl compute droplet list
 
 3. Open the `config` 
 
-4. Paste the followings [^12]
+4. Use the command below to create a new config file
+```shell
+vim config
+```
+5. Paste the followings [^12]
 ```config
 Host <Name>
   HostName <Public IPv4 Address>
@@ -243,13 +251,14 @@ Host <Name>
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
 ```
-
-5. Validate the SSH connection by using the following command.
+6. Press `Esc` and enter `:wq` 
+7. Validate the SSH connection by using the following command.
 ```shell
 ssh <Name> # If you set up the config file
 ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
-
+![[assets/sshname.png]]
+![[ssh-i.png]]
 ## Reference
 [^1]: [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
 
