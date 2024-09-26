@@ -102,12 +102,14 @@ Personal Access Token is like your account name and password. It is a common way
 3. Click **Generate Token**
 
 ### Link your Personal Access Token to `doctl` [^10]
-Adding your Personal Access Token to your doctl is giving your doctl access to control your DigitalOcean account.
+Adding your Personal Access Token to your `doctl` is giving your `doctl` access to control your DigitalOcean account.
 
-1. Go back to your droplet and  use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DIgitalOcean account using `doctl`.
+1. Go back to your droplet and use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DIgitalOcean account using `doctl`.
 ```bash
 doctl auth init --context <Name>
 ```
+* `doctl auth init` let you initialize `doctl` with the token you just created. You can then query and manage your account with the access given in previous step.
+* `--content` allows you to set up a custom name for that token.
 
 2. Enter your API token
 
@@ -115,8 +117,9 @@ doctl auth init --context <Name>
 ```shell
 doctl auth switch --context <Name>
 ```
-
-4. Use the command below to see validate your account.
+* `doctl auth switch` let you switch authentication using the name you entered in step 1.
+``
+4. Use the command below to retrieves details from  your account.
 ```bash
 doctl account get
 ```
@@ -228,11 +231,12 @@ doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb
 ```shell
 doctl compute droplet list --format Name,PublicIPv4
 ```
-![[ipv4.png]]
+![[assets/ipv4.png]]
 5. Record the Public IPv4 address of the new droplet created
 ### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
 
+**Note** : Step 2 to 6 are optional
 2. Navigate to your `~\.ssh\config` for Linux and or `C:\Users\your-username\.ssh`
 
 3. Open the `config` 
@@ -241,6 +245,7 @@ doctl compute droplet list --format Name,PublicIPv4
 ```shell
 vim config
 ```
+
 5. Paste the followings [^12]
 ```config
 Host <Name>
@@ -252,13 +257,14 @@ Host <Name>
   UserKnownHostsFile /dev/null
 ```
 6. Press `Esc` and enter `:wq` 
+
 7. Validate the SSH connection by using the following command.
 ```shell
 ssh <Name> # If you set up the config file
 ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
 ![[assets/sshname.png]]
-![[ssh-i.png]]
+![[assets/ssh-i.png]]
 ## Reference
 [^1]: [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
 
