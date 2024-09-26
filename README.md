@@ -45,7 +45,7 @@ ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
  You can choose rather add a passphrase for your SSH key or not, it is like setting up an extra password every time you connect using SSH.
  
 If it success, it should look like
-![[assets/key_image.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/key_image.png)
 3. Use the commands below to navigate to `.ssh` directory
 ```
 cd ~/.ssh
@@ -55,7 +55,7 @@ cd ~/.ssh
 ```shell
 ls
 ```
-![[ls_keys.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ls_keys.png)
 There should be two files
 * `do-key` which is your private key (keep it private)
 * `do-key.pub` which is your public key (you can share this)
@@ -91,13 +91,13 @@ doctl compute ssh-key create "<Key Name>" --public-key "$(cat ~/.ssh/do-key.pub)
 * `"$(<Command>)"` is doing command substitution. It will replace command with the output of command instead.[^2] 
 
 * `cat ~/.ssh/do-key.pub` is reading `do-key.pub` file which is your public key.
-![[ssh_key_doctl.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key_doctl.png)
 ### Create a New Personal Access Token [^10]
 Personal Access Token is like your account name and password. It is a common way for linking a web service account to your API.
 
 1. Go to https://cloud.digitalocean.com/account/api/tokens and click **Generate New Token** 
 
-2. Enter a token name, choose a desire expiration duration and choose Full Access![[assets/api_setup.png]]
+2. Enter a token name, choose a desire expiration duration and choose Full Access![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_setup.png)
 
 3. Click **Generate Token**
 
@@ -124,18 +124,18 @@ doctl auth switch --context <Name>
 doctl account get
 ```
 
-![[assets/api_user.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_user.png)
 
 5. Use the command below to show a list of different plans and their specs and price.
 ```shell
 doctl compute size list
 ```
-![[price_list.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/price_list.png)
 6. Use the command below to see your SSH key ID.
 ```shell
 doctl compute ssh-key list
 ```
-![[assets/ssh_key.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key.png)
 7. Use the command below to create a cloud-init configuration file.
 ```shell
 touch cloud-init-arch.yml
@@ -211,12 +211,12 @@ disable_root: true
 ```shell
 doctl projects list
 ```
-![[assets/project_list.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/project_list.png)
 2. Use command line below to check list of custom image
 ```Shell
 doctl compute image list-user
 ```
-![[assets/custom_image.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/custom_image.png)
 3. Use command line below to create a new droplet
 ```shell
 doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --project-id <Project ID> <Droplet Name>
@@ -226,12 +226,12 @@ doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb
 * `--image` specify the distro name for droplet
 
 * `--size` specify the number of CPU and amount of RAM
-![[assets/create_droplet.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/create_droplet.png)
 4. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
 ```shell
 doctl compute droplet list --format Name,PublicIPv4
 ```
-![[assets/ipv4.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ipv4.png)
 5. Record the Public IPv4 address of the new droplet created
 ### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
@@ -263,8 +263,8 @@ Host <Name>
 ssh <Name> # If you set up the config file
 ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
-![[assets/sshname.png]]
-![[assets/ssh-i.png]]
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key.png)
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh-i.png)
 ## Reference
 [^1]: [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
 
