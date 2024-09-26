@@ -97,7 +97,8 @@ Personal Access Token is like your account name and password. It is a common way
 
 1. Go to https://cloud.digitalocean.com/account/api/tokens and click **Generate New Token** 
 
-2. Enter a token name, choose a desire expiration duration and choose Full Access![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_setup.png)
+2. Enter a token name, choose a desire expiration duration and choose Full Access
+![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_setup.png)
 
 3. Click **Generate Token**
 
