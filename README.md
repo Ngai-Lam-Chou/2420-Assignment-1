@@ -14,8 +14,8 @@ By the end of this guide, you will understand the use of SSH,  `doctl`and will b
 		- Install some initial packages
 		- Add a public SSH key to the authorized_keys file in your new user home directory
 		- Disable root access via SSH
-## Creating a SSH keys on local machine[^1] [^9]
-SSH protocol allows you to send commands to a computer over an unsecured network safely. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way of managing computers remotely (Usually between client and server).
+## Creating a SSH keys on local machine [^2]
+SSH protocol allows you to send commands to a computer over an unsecured network safely. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way of managing computers remotely (Usually between client and server).[^1]
 
 You can think of SSH keys like a locked box: the public key is like giving your friend a box to which only they have the key (the private key) to unlock.
 
@@ -63,7 +63,7 @@ There should be two files
 * `do-key` which is your private key (keep it private)
 * `do-key.pub` which is your public key (you can share this)
 
-## Create a Droplet running Arch Linux using the `doctl` command-line tool
+## Create a Droplet running Arch Linux using the `doctl` command-line tool[]
 
 Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and managing your DigitalOcean account.  It allows you to perform various tasks. For example, setting up a new droplet, and adding a new SSH key. We will learn how to create a new droplet in an existing droplet.
 ### Installing `doctl` Utility on your Local Machine
