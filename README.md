@@ -105,7 +105,7 @@ Personal Access Token is like your account name and password. It is a common way
 
 3. Click **Generate Token**
 
-### Link your Personal Access Token to `doctl` [^10]
+### Link your Personal Access Token to `doctl` [^14]
 Adding your Personal Access Token to your `doctl` gives your `doctl` access to control your DigitalOcean account.
 
 1. Go back to your droplet and use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DigitalOcean account using `doctl`.
@@ -303,3 +303,5 @@ ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 [^12]: [https://www.ssh.com/academy/ssh/config](https://www.ssh.com/academy/ssh/config)
 
 [^13]: [https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup](https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup)
+
+[^14] [https://docs.digitalocean.com/reference/doctl/reference/auth/init/](https://docs.digitalocean.com/reference/doctl/reference/auth/init/)
