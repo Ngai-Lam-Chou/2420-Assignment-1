@@ -44,8 +44,10 @@ ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
 
  You can choose rather add a passphrase for your SSH key or not, it is like setting up an extra password every time you connect using SSH.
  
-If it success, it should look like
+If it success, it should look like:
+
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/key_image.png)
+
 3. Use the commands below to navigate to `.ssh` directory
 ```
 cd ~/.ssh
