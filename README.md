@@ -58,6 +58,7 @@ cd ~/.ssh
 ls
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ls_keys.png)
+
 There should be two files
 * `do-key` which is your private key (keep it private)
 * `do-key.pub` which is your public key (you can share this)
@@ -134,11 +135,13 @@ doctl account get
 doctl compute size list
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/price_list.png)
+
 6. Use the command below to see your SSH key ID.
 ```shell
 doctl compute ssh-key list
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key.png)
+
 7. Use the command below to create a cloud-init configuration file.
 ```shell
 touch cloud-init-arch.yml
@@ -215,11 +218,13 @@ disable_root: true
 doctl projects list
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/project_list.png)
+
 2. Use command line below to check list of custom image
 ```Shell
 doctl compute image list-user
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/custom_image.png)
+
 3. Use command line below to create a new droplet
 ```shell
 doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --project-id <Project ID> <Droplet Name>
@@ -230,11 +235,13 @@ doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb
 
 * `--size` specify the number of CPU and amount of RAM
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/create_droplet.png)
+
 4. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
 ```shell
 doctl compute droplet list --format Name,PublicIPv4
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ipv4.png)
+
 5. Record the Public IPv4 address of the new droplet created
 ### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
@@ -267,7 +274,9 @@ ssh <Name> # If you set up the config file
 ssh -i ~/.ssh/do-key <Username>@<Public IPv4 Address>
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key.png)
+
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh-i.png)
+
 ## Reference
 [^1]: [https://www.cloudflare.com/learning/access-management/what-is-ssh/](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
 
