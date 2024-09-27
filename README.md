@@ -9,26 +9,26 @@ By the end of this guide, you will understand the use of SSH,  `doctl`and will b
 	- Connect to your droplet from your local machine using SSH
 
 - Use `doctl` and cloud-init for every stage of setting up an Arch Linux droplet
-	- For cloud-init configuration file, we will cover the following actions
+	- For the cloud-init configuration file, we will cover the following actions
 		- Create a new regular user
 		- Install some initial packages
-		- Add a public ssh key to the authorized_keys file in your new users home directory
-		- Disable root access via ssh
+		- Add a public SSH key to the authorized_keys file in your new user home directory
+		- Disable root access via SSH
 ## Creating a SSH keys on local machine[^1] [^9]
-SSH is a protocol allows you to safely send commands to a computer over an unsecured network. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way for managing computer remotely (Usually between client and server).
+SSH protocol allows you to send commands to a computer over an unsecured network safely. It uses cryptography to encrypt and authenticate the use connection between devices. It is a common way of managing computers remotely (Usually between client and server).
 
 You can think of SSH keys like a locked box: the public key is like giving your friend a box to which only they have the key (the private key) to unlock.
 
 1. Open Terminal.
 
-2. Use the command below, replace *Your Email Here* with your own Email.
+2. Use the command below, to replace *Your Email Here* with your Email.
 ```shell 
 ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
 ```
 
 `ssh-keygen` is the command-line utility for generating SSH keys.
 
-`~`  is a symbol represents the current user's home directory. 
+`~`  is a symbol that represents the current user's home directory. 
 
 `-f` specify the filename and file path of the key file.
 
@@ -42,9 +42,9 @@ ssh-keygen -t ed25519 -f ~/.ssh/do-key -C "Your Email Here"
  ssh-keygen -t rsa -b 4096 -f ~/.ssh/do-key -C "Your Email Here"
 ```
 
- You can choose rather add a passphrase for your SSH key or not, it is like setting up an extra password every time you connect using SSH.
+ You can choose whether to add a passphrase for your SSH key or not, it is like setting up an extra password every time you connect using SSH.
  
-If it success, it should look like:
+If it is a success, it should look like this:
 
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/key_image.png)
 
@@ -65,7 +65,7 @@ There should be two files
 
 ## Create a Droplet running Arch Linux using the `doctl` command-line tool
 
-Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and manage your DigitalOcean account.  It allows you to perform various tasks. For example, setting up new droplet, adding a new SSH key. We will learn how to create a new droplet in a existing droplet.
+Droplets are Linux-based virtual machines (VMs) that run on top of virtualized hardware. `doctl` is the command line interface for using droplets and managing your DigitalOcean account.  It allows you to perform various tasks. For example, setting up a new droplet, and adding a new SSH key. We will learn how to create a new droplet in an existing droplet.
 ### Installing `doctl` Utility on your Local Machine
 #### Arch Linux
 1. Run the following command in your terminal
@@ -74,7 +74,7 @@ sudo pacman -S doctl
 ```
 * `sudo` means superuser do, it will temporarily elevate to root user to have root privileges
 
-* `pacman` is one distinguishing utility of Arch Linux, it allows user to manage their packages for easily[^4]
+* `pacman` is one distinguishing utility of Arch Linux, it allows user to manage their packages easily[^4]
 
 * `-S` specify install only
 ### Create SSH keys and add them to your DigitalOcean account[^3]
@@ -91,28 +91,28 @@ doctl compute ssh-key create "<Key Name>" --public-key "$(cat ~/.ssh/do-key.pub)
 
 * `--public-key` specify your public key
 
-* `"$(<Command>)"` is doing command substitution. It will replace command with the output of command instead.[^2] 
+* `"$(<Command>)"` is doing command substitution. It will replace the command with the output of the command instead.[^2] 
 
 * `cat ~/.ssh/do-key.pub` is reading `do-key.pub` file which is your public key.
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/ssh_key_doctl.png)
 ### Create a New Personal Access Token [^10]
-Personal Access Token is like your account name and password. It is a common way for linking a web service account to your API.
+Personal Access Token is like your account name and password. It is a common way of linking a web service account to your API.
 
 1. Go to https://cloud.digitalocean.com/account/api/tokens and click **Generate New Token** 
 
-2. Enter a token name, choose a desire expiration duration and choose Full Access
+2. Enter a token name, choose a desired expiration duration, and choose Full Access
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_setup.png)
 
 3. Click **Generate Token**
 
 ### Link your Personal Access Token to `doctl` [^10]
-Adding your Personal Access Token to your `doctl` is giving your `doctl` access to control your DigitalOcean account.
+Adding your Personal Access Token to your `doctl` gives your `doctl` access to control your DigitalOcean account.
 
-1. Go back to your droplet and use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DIgitalOcean account using `doctl`.
+1. Go back to your droplet and use the command below, this command will authenticate `doctl` with DigitalOcean account. It will allow you to manage your DigitalOcean account using `doctl`.
 ```bash
 doctl auth init --context <Name>
 ```
-* `doctl auth init` let you initialize `doctl` with the token you just created. You can then query and manage your account with the access given in previous step.
+* `doctl auth init` lets you initialize `doctl` with the token you just created. You can then query and manage your account with the access given in the previous step.
 * `--content` allows you to set up a custom name for that token.
 
 2. Enter your API token
@@ -121,16 +121,16 @@ doctl auth init --context <Name>
 ```shell
 doctl auth switch --context <Name>
 ```
-* `doctl auth switch` let you switch authentication using the name you entered in step 1.
+* `doctl auth switch` lets you switch authentication using the name you entered in step 1.
 ``
-4. Use the command below to retrieves details from  your account.
+4. Use the command below to retrieve details from your account.
 ```bash
 doctl account get
 ```
 
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/api_user.png)
 
-5. Use the command below to show a list of different plans and their specs and price.
+5. Use the command below to show a list of different plans and their specs and prices.
 ```shell
 doctl compute size list
 ```
@@ -153,7 +153,7 @@ sudo pacman -S vim # vim
 ```
 
 ### Cloud-init[^6][^8][^11]
-Cloud-init is a tool to performance configuration for setting up new system automatically. We will use cloud-init to perform a few action
+Cloud-init is a tool to perform configuration for setting up a new system automatically. We will use cloud-init to perform a few actions
 * Setting up SSH keys
 
 * Install Packages
@@ -192,48 +192,48 @@ packages:
 disable_root: true
 ```
 
-`users` specify we are adding user
+`users` specify we are adding a user
 * `name` specify username
 
-* `primary_group` specify the primary group
+* `primary_group` specifies the primary group
 
 * `groups` specify additional group
 
-* `sudo: ['ALL=(ALL) NOPASSWD:ALL']` allow a user unrestricted sudo access
+* `sudo: ['ALL=(ALL) NOPASSWD:ALL']` allows a user unrestricted sudo access
 
-* `shell` specify the path of the shell
+* `shell` specifies the path of the shell
 
-* `ssh-authorized-keys` specify the keys that are adding to user's authorized keys file
+* `ssh-authorized-keys` specifies the keys that are added to the user's authorized keys file
 
 * `ssh-ed25519 <Your Public Key> <Your Email>`is your public key
 
-* `packages` specify installing the following packages on first boot
+* `packages` specify installing the following packages on the first boot
 
 * `disable_root: true` specify we disable connect to the droplet via SSH as root user
 
 **Note** : If copy and paste does not work, press `i` to insert text. After inputting all the text press `ESC` and enter `:wq!`
 ### Paste the command below to create a new droplet.
-1. Use the command below to check list of existing project.
+1. Use the command below to check the list of existing projects.
 ```shell
 doctl projects list
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/project_list.png)
 
-2. Use command line below to check list of custom image
+2. Use the command line below to check list of custom image
 ```Shell
 doctl compute image list-user
 ```
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/custom_image.png)
 
-3. Use command line below to create a new droplet
+3. Use the command line below to create a new droplet
 ```shell
 doctl compute droplet create --region sfo3 --image <Image Id> --size s-1vcpu-1gb-intel --ssh-keys <SSH Key ID> --user-data-file <Path of cloud init file> --project-id <Project ID> <Droplet Name>
 ```
- * `--region` specify the region of the server
+ * `--region` specifies the region of the server
  
-* `--image` specify the distro name for droplet
+* `--image` specify the distro name for the droplet
 
-* `--size` specify the number of CPU and amount of RAM
+* `--size` specifies the number of CPUs and amount of RAM
 ![alt_text](https://github.com/Ngai-Lam-Chou/2420-Assignment-1/blob/main/assets/create_droplet.png)
 
 4. Use the command line below to show a list of your droplets, you should see a droplet with the name you just provided.
@@ -246,7 +246,7 @@ doctl compute droplet list --format Name,PublicIPv4
 ### Connect to your droplet from your local machine using SSH[^2]
 1. Exit your connection with your existing droplet using `exit`
 
-**Note** : Step 2 to 6 are optional
+**Note** : Steps 2 to 6 are optional
 2. Navigate to your `~\.ssh\config` for Linux and or `C:\Users\your-username\.ssh`
 
 3. Open the `config` 
@@ -256,7 +256,7 @@ doctl compute droplet list --format Name,PublicIPv4
 vim config
 ```
 
-5. Paste the followings [^12]
+5. Paste the following [^12]
 ```config
 Host <Name>
   HostName <Public IPv4 Address>
